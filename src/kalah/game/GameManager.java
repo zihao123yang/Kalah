@@ -23,8 +23,15 @@ public class GameManager {
     private GameState _gameState;
     private String[] _players;
 
+    CaptureRule _captureRule;
+    RepeatTurnRule _repeatTurnRule;
+    GameQuitRule _gameQuitRule;
+    GameFinishedRule _gameFinishedRule;
 
-    public GameManager(ASCIIUserInterface userInterface) {
+
+
+    public GameManager(ASCIIUserInterface userInterface, CaptureRule captureRule, RepeatTurnRule repeatTurnRule,
+                       GameQuitRule gameQuitRule, GameFinishedRule gameFinishedRule) {
         _gameBoard = new GameBoard();
         _userInterface = userInterface;
         _currentPlayerIndex = 0;
@@ -32,6 +39,11 @@ public class GameManager {
         _players = new String[2];
         _players[0] = DEFAULT_PLAYER1_NAME;
         _players[1] = DEFAULT_PLAYER2_NAME;
+
+        _captureRule = captureRule;
+        _repeatTurnRule = repeatTurnRule;
+        _gameQuitRule = gameQuitRule;
+        _gameFinishedRule = gameFinishedRule;
     }
 
     public void play() {
@@ -64,13 +76,10 @@ public class GameManager {
     private void executeMove(int playerInput) {
         SowResults result = _gameBoard.sow(_currentPlayerIndex, playerInput - 1);
 
-        if (result.lastHouseEmpty() && result.getEndingBoardSide() == _currentPlayerIndex) {
-            _gameBoard.capture(_currentPlayerIndex, result.lastHouseSowed());
-        }
+        _captureRule.doCapture(result, _currentPlayerIndex, _gameBoard);
 
-        if (!result.endedInStore() || result.getEndingBoardSide() != _currentPlayerIndex) {
-            _currentPlayerIndex = (_currentPlayerIndex == 0) ? 1 : 0;
-        }
+        _currentPlayerIndex = _repeatTurnRule.doRepeatTurn(result, _currentPlayerIndex);
+
 
     }
 
