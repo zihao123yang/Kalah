@@ -21,8 +21,8 @@ public class GameBoard {
 
     protected GameBoard(Player p1, Player p2) {
         _boardComponents = new HashMap<Integer, HalfBoard>();
-        _boardComponents.put(0, new HalfBoard(DEFAULT_HOUSES_PER_PLAYER, DEFAULT_SEEDS_PER_HOUSE, 0, p1));
-        _boardComponents.put(1, new HalfBoard(DEFAULT_HOUSES_PER_PLAYER, DEFAULT_SEEDS_PER_HOUSE, 1, p2));
+                _boardComponents.put(1, new HalfBoard(DEFAULT_HOUSES_PER_PLAYER, DEFAULT_SEEDS_PER_HOUSE, p1));
+        _boardComponents.put(2, new HalfBoard(DEFAULT_HOUSES_PER_PLAYER, DEFAULT_SEEDS_PER_HOUSE, p2));
 
         _housesPerPlayer = DEFAULT_HOUSES_PER_PLAYER;
     }
@@ -74,9 +74,9 @@ public class GameBoard {
 
     protected GameBoardRepresentation createBoardRepresentation() {
 
-        GameBoardRepresentation gameBoardRepresentation = new GameBoardRepresentation(getSeedsInHouses(0),
-                getSeedsInHouses(1), getSeedsInStore(0), getSeedsInStore(1),
-                getPlayerName(0), getPlayerName(1));
+        GameBoardRepresentation gameBoardRepresentation = new GameBoardRepresentation(getSeedsInHouses(1),
+                getSeedsInHouses(2), getSeedsInStore(1), getSeedsInStore(2),
+                getPlayerName(1), getPlayerName(2));
 
         return gameBoardRepresentation;
     }
@@ -90,12 +90,12 @@ public class GameBoard {
         int[] finalScores = new int[2];
 
         for (int i = 0; i < DEFAULT_HOUSES_PER_PLAYER; i++) {
-            finalScores[0] = finalScores[0] + _boardComponents.get(0).getNumberOfSeeds(i);
-            finalScores[1] = finalScores[1] + _boardComponents.get(1).getNumberOfSeeds(i);
+            finalScores[0] = finalScores[0] + _boardComponents.get(1).getNumberOfSeeds(i);
+            finalScores[1] = finalScores[1] + _boardComponents.get(2).getNumberOfSeeds(i);
         }
 
-        finalScores[0] = finalScores[0] + _boardComponents.get(0).getNumSeedsInStore();
-        finalScores[1] = finalScores[1] + _boardComponents.get(1).getNumSeedsInStore();
+        finalScores[0] = finalScores[0] + _boardComponents.get(1).getNumSeedsInStore();
+        finalScores[1] = finalScores[1] + _boardComponents.get(2).getNumSeedsInStore();
 
 
         return finalScores;
@@ -112,9 +112,9 @@ public class GameBoard {
     //Helper methods
 
     private HalfBoard switchSidesOnBoard(HalfBoard originalSide) {
-        HalfBoard otherSide = _boardComponents.get(0);
-        if (originalSide.equals(_boardComponents.get(0))) {
-            otherSide = _boardComponents.get(1);
+        HalfBoard otherSide = _boardComponents.get(1);
+        if (originalSide.equals(_boardComponents.get(1))) {
+            otherSide = _boardComponents.get(2);
         }
         return otherSide;
     }
@@ -140,6 +140,6 @@ public class GameBoard {
         if (lastPositionSowed != -1 && currentSide.getNumberOfSeeds(lastPositionSowed) == 1) {
             lastPositionEmpty = true;
         }
-        return new SowResults(currentSide.getOwner(), lastPositionSowed, lastPositionEmpty);
+        return new SowResults(currentSide.getPlayerName(), lastPositionSowed, lastPositionEmpty);
     }
 }

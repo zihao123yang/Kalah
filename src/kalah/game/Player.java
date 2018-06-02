@@ -3,9 +3,11 @@ package kalah.game;
 public class Player {
     private String _name;
     private boolean _myTurn;
+    private int _playerNumber;
 
-    public Player(String name) {
+    public Player(String name, int playerNumber) {
         _name = name;
+        _playerNumber = playerNumber;
         _myTurn = false;
     }
 
@@ -23,5 +25,9 @@ public class Player {
 
     protected String provideName() {
         return _name;
+    }
+
+    protected int providePlayerNumber() {
+        return _playerNumber;
     }
 }

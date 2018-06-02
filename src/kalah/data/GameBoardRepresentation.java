@@ -44,12 +44,10 @@ public class GameBoardRepresentation {
     }
 
     public String getP1Name() {
-        System.out.println("p1: " + _p1 );
         return _p1;
     }
 
     public String getP2Name() {
-        System.out.println("p2: " + _p2 );
         return _p2;
     }
 }

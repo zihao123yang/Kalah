@@ -1,5 +1,6 @@
 package kalah.game;
 
+import kalah.data.GameBoardRepresentation;
 import kalah.data.SowResults;
 import kalah.view.ASCIIUserInterface;
 
@@ -19,33 +20,32 @@ public class GameManager {
 
     private GameBoard _gameBoard;
     private ASCIIUserInterface _userInterface;
-    private Player _currentPlayer;
-    private int _currentPlayerIndex;
+    private Player _p1;
+    private Player _p2;
     private GameState _gameState;
 
 
     public GameManager(ASCIIUserInterface userInterface) {
-        Player p1 = new Player("P1");
-        Player p2 = new Player("P2");
-        _currentPlayer = p1;
-        p1.giveTurn();
-        _gameBoard = new GameBoard(p1, p2);
+        _p1 = new Player("P1", 1);
+        _p2 = new Player("P2", 2);
+        _p1.giveTurn();
+        _gameBoard = new GameBoard(_p1, _p2);
         _userInterface = userInterface;
-        _currentPlayerIndex = 0;
         _gameState = GameState.RUNNING;
     }
 
     public void play() {
         while (_gameState == GameState.RUNNING) {
-            _userInterface.showBoard(_gameBoard.createBoardRepresentation());
+            GameBoardRepresentation boardRepresentation = _gameBoard.createBoardRepresentation();
+            _userInterface.showBoard(boardRepresentation);
 
-            if (_gameBoard.isCurrentSideEmpty(_currentPlayerIndex)) {
+            if (_gameBoard.isCurrentSideEmpty(playerWithTurn().providePlayerNumber())) {
                 _gameState = GameState.FINISHED;
             } else {
-                int playerInput = _userInterface.turnPrompt(_currentPlayer.provideName() , _gameBoard.getNumHousesPerPlayer());
+                int playerInput = _userInterface.turnPrompt(boardRepresentation, playerWithTurn().provideName());
                 if (playerInput == -1) {
                     _gameState = GameState.QUIT;
-                } else if (_gameBoard.isPlayerHouseEmpty(playerInput - 1, _currentPlayerIndex)) {
+                } else if (_gameBoard.isPlayerHouseEmpty(playerInput - 1, playerWithTurn().providePlayerNumber())) {
                     _userInterface.emptyHousePrompt();
                 } else {
                     executeMove(playerInput);
@@ -63,16 +63,35 @@ public class GameManager {
     }
 
     private void executeMove(int playerInput) {
-        SowResults result = _gameBoard.sow(_currentPlayerIndex, playerInput - 1);
+        SowResults result = _gameBoard.sow(playerWithTurn().providePlayerNumber(), playerInput - 1);
 
-        if (result.lastHouseEmpty() && result.getEndingBoardSide() == _currentPlayerIndex) {
-            _gameBoard.capture(_currentPlayerIndex, result.lastHouseSowed());
+        if (result.lastHouseEmpty() && result.getEndingPlayer().equals(playerWithTurn().provideName())) {
+            _gameBoard.capture(playerWithTurn().providePlayerNumber(), result.lastHouseSowed());
         }
 
-        if (!result.endedInStore() || result.getEndingBoardSide() != _currentPlayerIndex) {
-            _currentPlayerIndex = (_currentPlayerIndex == 0) ? 1 : 0;
+        if (!result.endedInStore() || !result.getEndingPlayer().equals(playerWithTurn().provideName())) {
+            switchTurn();
+
         }
 
+    }
+
+    private void switchTurn() {
+        if (_p1.isMyTurn()) {
+            _p1.takeAwayTurn();
+            _p2.giveTurn();
+        } else {
+            _p2.takeAwayTurn();
+            _p1.giveTurn();
+        }
+    }
+
+    private Player playerWithTurn() {
+        if (_p2.isMyTurn()) {
+            return _p2;
+        } else {
+            return _p1;
+        }
     }
 
 }

@@ -52,9 +52,10 @@ public class ASCIIUserInterface implements UserInterface {
     }
 
 
-    public int turnPrompt(String playerName, int numHousesPerPlayer) {
+    public int turnPrompt(GameBoardRepresentation boardRepresentation, String currentPlayerName) {
         //to do- change
-        return _io.readInteger("Player " + playerName + "'s turn - Specify house number or 'q' to quit: ", 1, numHousesPerPlayer, -1, "q");
+        return _io.readInteger("Player " + currentPlayerName + "'s turn - Specify house number or 'q' to quit: ",
+                1, boardRepresentation.getP1Houses().size(), -1, "q");
     }
 
     public void emptyHousePrompt() {

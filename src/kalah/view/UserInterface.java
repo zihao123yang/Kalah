@@ -11,7 +11,7 @@ public interface UserInterface {
 
     public void showBoard(GameBoardRepresentation gameBoardRepresentation);
 
-    public int turnPrompt(String playerName, int numHousesPerPlayer);
+    public int turnPrompt(GameBoardRepresentation boardRepresentation, String currentPlayerName);
 
     public void emptyHousePrompt();
 
