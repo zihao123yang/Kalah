@@ -1,6 +1,6 @@
 package kalah.game;
 
-interface GameQuitRule {
+public interface GameQuitRule {
 
     public boolean didPlayerQuitGame();
 }

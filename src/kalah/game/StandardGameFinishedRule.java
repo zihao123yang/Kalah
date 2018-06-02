@@ -4,7 +4,8 @@ import kalah.data.GameBoardRepresentation;
 
 public class StandardGameFinishedRule implements GameFinishedRule {
 
-    public boolean isGameFinished(GameBoardRepresentation gameBoardRepresentation) {
-
+    public boolean isGameFinished() {
+        boolean hi = true;
+        return hi;
     }
 }

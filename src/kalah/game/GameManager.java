@@ -1,5 +1,6 @@
 package kalah.game;
 
+import kalah.data.GameBoardRepresentation;
 import kalah.data.SowResults;
 import kalah.view.ASCIIUserInterface;
 
@@ -19,9 +20,9 @@ public class GameManager {
 
     private GameBoard _gameBoard;
     private ASCIIUserInterface _userInterface;
-    private int _currentPlayerIndex;
+    private Player _p1;
+    private Player _p2;
     private GameState _gameState;
-    private String[] _players;
 
     CaptureRule _captureRule;
     RepeatTurnRule _repeatTurnRule;
@@ -29,16 +30,14 @@ public class GameManager {
     GameFinishedRule _gameFinishedRule;
 
 
-
     public GameManager(ASCIIUserInterface userInterface, CaptureRule captureRule, RepeatTurnRule repeatTurnRule,
                        GameQuitRule gameQuitRule, GameFinishedRule gameFinishedRule) {
-        _gameBoard = new GameBoard();
+        _p1 = new Player("P1", 1);
+        _p2 = new Player("P2", 2);
+        _p1.giveTurn();
+        _gameBoard = new GameBoard(_p1, _p2);
         _userInterface = userInterface;
-        _currentPlayerIndex = 0;
         _gameState = GameState.RUNNING;
-        _players = new String[2];
-        _players[0] = DEFAULT_PLAYER1_NAME;
-        _players[1] = DEFAULT_PLAYER2_NAME;
 
         _captureRule = captureRule;
         _repeatTurnRule = repeatTurnRule;
@@ -48,15 +47,16 @@ public class GameManager {
 
     public void play() {
         while (_gameState == GameState.RUNNING) {
-            _userInterface.showBoard(_gameBoard.createBoardRepresentation(), _players[0], _players[1]);
+            GameBoardRepresentation boardRepresentation = _gameBoard.createBoardRepresentation();
+            _userInterface.showBoard(boardRepresentation);
 
-            if (_gameBoard.isCurrentSideEmpty(_currentPlayerIndex)) {
+            if (_gameBoard.isCurrentSideEmpty(playerWithTurn().providePlayerNumber())) {
                 _gameState = GameState.FINISHED;
             } else {
-                int playerInput = _userInterface.turnPrompt(_players[_currentPlayerIndex], _gameBoard.getNumHousesPerPlayer());
+                int playerInput = _userInterface.turnPrompt(boardRepresentation, playerWithTurn().provideName());
                 if (playerInput == -1) {
                     _gameState = GameState.QUIT;
-                } else if (_gameBoard.isPlayerHouseEmpty(playerInput - 1, _currentPlayerIndex)) {
+                } else if (_gameBoard.isPlayerHouseEmpty(playerInput - 1, playerWithTurn().providePlayerNumber())) {
                     _userInterface.emptyHousePrompt();
                 } else {
                     executeMove(playerInput);
@@ -65,7 +65,7 @@ public class GameManager {
         }
 
         _userInterface.gameFinishedPrompt();
-        _userInterface.showBoard(_gameBoard.createBoardRepresentation(), _players[0], _players[1]);
+        _userInterface.showBoard(_gameBoard.createBoardRepresentation());
 
         if (_gameState == GameState.FINISHED) {
             _userInterface.finalScoresPrompt(_gameBoard.getFinalScores());
@@ -74,13 +74,34 @@ public class GameManager {
     }
 
     private void executeMove(int playerInput) {
-        SowResults result = _gameBoard.sow(_currentPlayerIndex, playerInput - 1);
+        SowResults result = _gameBoard.sow(playerWithTurn().providePlayerNumber(), playerInput - 1);
 
-        _captureRule.doCapture(result, _currentPlayerIndex, _gameBoard);
+        if (result.lastHouseEmpty() && result.getEndingPlayer().equals(playerWithTurn().provideName())) {
+            _gameBoard.capture(playerWithTurn().providePlayerNumber(), result.lastHouseSowed());
+        }
 
-        _currentPlayerIndex = _repeatTurnRule.doRepeatTurn(result, _currentPlayerIndex);
+        if (!result.endedInStore() || !result.getEndingPlayer().equals(playerWithTurn().provideName())) {
+            switchTurn();
 
+        }
 
     }
 
+    private void switchTurn() {
+        if (_p1.isMyTurn()) {
+            _p1.takeAwayTurn();
+            _p2.giveTurn();
+        } else {
+            _p2.takeAwayTurn();
+            _p1.giveTurn();
+        }
+    }
+
+    private Player playerWithTurn() {
+        if (_p2.isMyTurn()) {
+            return _p2;
+        } else {
+            return _p1;
+        }
+    }
 }

@@ -1,6 +1,7 @@
 package kalah.game;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by zihaoyang on 2/05/18.
@@ -9,17 +10,18 @@ import java.util.ArrayList;
  */
 public class HalfBoard {
 
-    private ArrayList<House> _houses;
+    private List<House> _houses;
     private Store _store;
-    private int _owner;
+    private Player _player;
 
-    protected HalfBoard(int numHouses, int numSeeds, int player) {
+    protected HalfBoard(int numHouses, int numSeeds, Player player) {
         _houses = new ArrayList<House>();
         for (int i = 0; i < numHouses; i++) {
             _houses.add(new House(numSeeds));
         }
         _store = new Store();
-        _owner = player;
+        _player = player;
+
     }
 
     protected ArrayList<Integer> getSeedsDistribution() {
@@ -37,11 +39,6 @@ public class HalfBoard {
     protected int getNumberOfSeeds(int houseIndex) {
         return _houses.get(houseIndex).getNumSeeds();
     }
-
-    protected int getOwner() {
-        return _owner;
-    }
-
 
     protected boolean isHouseEmpty(int houseNumber) {
         if (_houses.get(houseNumber).getNumSeeds() == 0) {
@@ -89,9 +86,17 @@ public class HalfBoard {
         _houses.get(houseIndex).empty();
     }
 
+    protected String getPlayerName() {
+        return _player.provideName();
+    }
+
+    protected boolean isPlayersTurn() {
+        return _player.isMyTurn();
+    }
+
 
     protected boolean equals(HalfBoard other) {
-        if (this._owner == other.getOwner()) {
+        if (this._player.provideName() == other.getPlayerName()) {
             return true;
         }
 

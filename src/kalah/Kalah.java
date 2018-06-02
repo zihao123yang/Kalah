@@ -2,7 +2,7 @@ package kalah;
 
 import com.qualitascorpus.testsupport.IO;
 import com.qualitascorpus.testsupport.MockIO;
-import kalah.game.GameManager;
+import kalah.game.*;
 import kalah.view.ASCIIUserInterface;
 
 /**
@@ -15,7 +15,12 @@ public class Kalah {
 	}
 	public void play(IO io) {
 		ASCIIUserInterface output = new ASCIIUserInterface(io);
-		GameManager gameMaster = new GameManager(output);
+		CaptureRule captureRule = new StandardCaptureRule();
+		RepeatTurnRule repeatTurnRule = new StandRepeatTurnRule();
+		GameQuitRule gameQuitRule = new StandardGameQuitRule();
+		GameFinishedRule gameFinishedRule = new StandardGameFinishedRule();
+
+		GameManager gameMaster = new GameManager(output, captureRule, repeatTurnRule, gameQuitRule, gameFinishedRule);
 		gameMaster.play();
 	}
 }
