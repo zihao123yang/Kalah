@@ -12,14 +12,17 @@ public class HalfBoard {
     private ArrayList<House> _houses;
     private Store _store;
     private int _owner;
+    private Player _player;
 
-    protected HalfBoard(int numHouses, int numSeeds, int player) {
+    protected HalfBoard(int numHouses, int numSeeds, int owner, Player player) {
         _houses = new ArrayList<House>();
         for (int i = 0; i < numHouses; i++) {
             _houses.add(new House(numSeeds));
         }
         _store = new Store();
-        _owner = player;
+        _owner = owner;
+        _player = player;
+
     }
 
     protected ArrayList<Integer> getSeedsDistribution() {
@@ -87,6 +90,10 @@ public class HalfBoard {
 
     protected void removeSeeds(int houseIndex) {
         _houses.get(houseIndex).empty();
+    }
+
+    protected String getPlayerName() {
+        return _player.provideName();
     }
 
 

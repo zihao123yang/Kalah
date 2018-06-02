@@ -9,7 +9,7 @@ import kalah.data.GameBoardRepresentation;
  */
 public interface UserInterface {
 
-    public void showBoard(GameBoardRepresentation gameBoardRepresentation, String player1Name, String player2Name);
+    public void showBoard(GameBoardRepresentation gameBoardRepresentation);
 
     public int turnPrompt(String playerName, int numHousesPerPlayer);
 

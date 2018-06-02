@@ -19,10 +19,10 @@ public class GameBoard {
     private HashMap<Integer, HalfBoard> _boardComponents;
     private int _housesPerPlayer;
 
-    protected GameBoard() {
+    protected GameBoard(Player p1, Player p2) {
         _boardComponents = new HashMap<Integer, HalfBoard>();
-        _boardComponents.put(0, new HalfBoard(DEFAULT_HOUSES_PER_PLAYER, DEFAULT_SEEDS_PER_HOUSE, 0));
-        _boardComponents.put(1, new HalfBoard(DEFAULT_HOUSES_PER_PLAYER, DEFAULT_SEEDS_PER_HOUSE, 1));
+        _boardComponents.put(0, new HalfBoard(DEFAULT_HOUSES_PER_PLAYER, DEFAULT_SEEDS_PER_HOUSE, 0, p1));
+        _boardComponents.put(1, new HalfBoard(DEFAULT_HOUSES_PER_PLAYER, DEFAULT_SEEDS_PER_HOUSE, 1, p2));
 
         _housesPerPlayer = DEFAULT_HOUSES_PER_PLAYER;
     }
@@ -75,7 +75,8 @@ public class GameBoard {
     protected GameBoardRepresentation createBoardRepresentation() {
 
         GameBoardRepresentation gameBoardRepresentation = new GameBoardRepresentation(getSeedsInHouses(0),
-                getSeedsInHouses(1), getSeedsInStore(0), getSeedsInStore(1));
+                getSeedsInHouses(1), getSeedsInStore(0), getSeedsInStore(1),
+                getPlayerName(0), getPlayerName(1));
 
         return gameBoardRepresentation;
     }
@@ -124,6 +125,10 @@ public class GameBoard {
 
     private int getSeedsInStore(int player) {
         return _boardComponents.get(player).getNumSeedsInStore();
+    }
+
+    private String getPlayerName(int playerNumber) {
+        return _boardComponents.get(playerNumber).getPlayerName();
     }
 
     private SowResults createSowResults(int nextPositionToSow, HalfBoard currentSide) {

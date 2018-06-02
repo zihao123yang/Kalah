@@ -18,12 +18,14 @@ public class ASCIIUserInterface implements UserInterface {
         _io = io;
     }
 
-    public void showBoard(GameBoardRepresentation gameBoard, String player1, String player2) {
+    public void showBoard(GameBoardRepresentation gameBoard) {
 
         ArrayList<Integer> p1Houses = gameBoard.getP1Houses();
         ArrayList<Integer> p2Houses = gameBoard.getP2Houses();
         int p1Store = gameBoard.getP1Store();
         int p2Store = gameBoard.getP2Store();
+        String player1 = gameBoard.getP1Name();
+        String player2 = gameBoard.getP2Name();
 
 
         StringBuilder p2BoardBuilder = new StringBuilder();

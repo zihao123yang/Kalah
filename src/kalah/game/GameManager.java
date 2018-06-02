@@ -19,29 +19,30 @@ public class GameManager {
 
     private GameBoard _gameBoard;
     private ASCIIUserInterface _userInterface;
+    private Player _currentPlayer;
     private int _currentPlayerIndex;
     private GameState _gameState;
-    private String[] _players;
 
 
     public GameManager(ASCIIUserInterface userInterface) {
-        _gameBoard = new GameBoard();
+        Player p1 = new Player("P1");
+        Player p2 = new Player("P2");
+        _currentPlayer = p1;
+        p1.giveTurn();
+        _gameBoard = new GameBoard(p1, p2);
         _userInterface = userInterface;
         _currentPlayerIndex = 0;
         _gameState = GameState.RUNNING;
-        _players = new String[2];
-        _players[0] = DEFAULT_PLAYER1_NAME;
-        _players[1] = DEFAULT_PLAYER2_NAME;
     }
 
     public void play() {
         while (_gameState == GameState.RUNNING) {
-            _userInterface.showBoard(_gameBoard.createBoardRepresentation(), _players[0], _players[1]);
+            _userInterface.showBoard(_gameBoard.createBoardRepresentation());
 
             if (_gameBoard.isCurrentSideEmpty(_currentPlayerIndex)) {
                 _gameState = GameState.FINISHED;
             } else {
-                int playerInput = _userInterface.turnPrompt(_players[_currentPlayerIndex], _gameBoard.getNumHousesPerPlayer());
+                int playerInput = _userInterface.turnPrompt(_currentPlayer.provideName() , _gameBoard.getNumHousesPerPlayer());
                 if (playerInput == -1) {
                     _gameState = GameState.QUIT;
                 } else if (_gameBoard.isPlayerHouseEmpty(playerInput - 1, _currentPlayerIndex)) {
@@ -53,7 +54,7 @@ public class GameManager {
         }
 
         _userInterface.gameFinishedPrompt();
-        _userInterface.showBoard(_gameBoard.createBoardRepresentation(), _players[0], _players[1]);
+        _userInterface.showBoard(_gameBoard.createBoardRepresentation());
 
         if (_gameState == GameState.FINISHED) {
             _userInterface.finalScoresPrompt(_gameBoard.getFinalScores());
