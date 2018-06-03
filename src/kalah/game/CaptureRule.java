@@ -4,7 +4,7 @@ import kalah.data.SowResults;
 
 public interface CaptureRule {
 
-    public void doCapture(SowResults sowResults, int currentPlayer, GameBoard gameBoard);
+    public void doCapture(SowResults sowResults, Player p1, Player p2, GameBoard gameBoard);
 
 
 }

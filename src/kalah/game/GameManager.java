@@ -76,9 +76,7 @@ public class GameManager {
     private void executeMove(int playerInput) {
         SowResults result = _gameBoard.sow(playerWithTurn().providePlayerNumber(), playerInput - 1);
 
-        if (result.lastHouseEmpty() && result.getEndingPlayer().equals(playerWithTurn().provideName())) {
-            _gameBoard.capture(playerWithTurn().providePlayerNumber(), result.lastHouseSowed());
-        }
+        _captureRule.doCapture(result, _p1, _p2, _gameBoard);
 
         if (!result.endedInStore() || !result.getEndingPlayer().equals(playerWithTurn().provideName())) {
             switchTurn();
