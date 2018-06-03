@@ -1,11 +1,9 @@
-package kalah.game;
+package kalah.game.pieces;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by zihaoyang on 2/05/18.
- *
  * This class represents a single player's side of a Kalah game board
  */
 public class HalfBoard {
@@ -45,17 +43,6 @@ public class HalfBoard {
             return true;
         }
         return false;
-    }
-
-    protected boolean areHousesEmpty() {
-        boolean housesEmpty = true;
-        for (House house : _houses) {
-            if (!house.isEmpty()) {
-                housesEmpty = false;
-                break;
-            }
-        }
-        return housesEmpty;
     }
 
     protected int sowSeed(int position) {

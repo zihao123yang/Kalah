@@ -1,8 +1,6 @@
 package kalah.data;
 
 /**
- * Created by zihaoyang on 3/05/18.
- *
  * This is a data class that safely contains information from the results of a player move, after all the seeds have been sowed.
  */
 public class SowResults {

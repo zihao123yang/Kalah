@@ -1,33 +1,33 @@
-package kalah.game;
+package kalah.game.pieces;
 
 public class Player {
     private String _name;
     private boolean _myTurn;
     private int _playerNumber;
 
-    public Player(String name, int playerNumber) {
+    protected Player(String name, int playerNumber) {
         _name = name;
         _playerNumber = playerNumber;
         _myTurn = false;
     }
 
-    protected boolean isMyTurn() {
+    public boolean isMyTurn() {
         return _myTurn;
     }
 
-    protected void giveTurn() {
+    public void giveTurn() {
         _myTurn = true;
     }
 
-    protected void takeAwayTurn() {
+    public void takeAwayTurn() {
         _myTurn = false;
     }
 
-    protected String provideName() {
+    public String provideName() {
         return _name;
     }
 
-    protected int providePlayerNumber() {
+    public int providePlayerNumber() {
         return _playerNumber;
     }
 }

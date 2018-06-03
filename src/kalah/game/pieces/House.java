@@ -1,8 +1,6 @@
-package kalah.game;
+package kalah.game.pieces;
 
 /**
- * Created by zihaoyang on 25/04/18.
- *
  * This class represents a House in the the Kalah game
  */
 public class House {
@@ -23,13 +21,5 @@ public class House {
 
     protected void addSeed() {
         _numSeeds++;
-    }
-
-    protected boolean isEmpty() {
-        boolean empty = false;
-        if (_numSeeds == 0) {
-            empty = true;
-        }
-        return empty;
     }
 }

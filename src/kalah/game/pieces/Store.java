@@ -1,8 +1,6 @@
-package kalah.game;
+package kalah.game.pieces;
 
 /**
- * Created by zihaoyang on 25/04/18.
- *
  * This class represents a store in a Kalah game
  */
 public class Store {

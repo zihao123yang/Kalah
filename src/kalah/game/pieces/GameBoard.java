@@ -1,4 +1,4 @@
-package kalah.game;
+package kalah.game.pieces;
 
 import kalah.data.SowResults;
 import kalah.data.GameBoardRepresentation;
@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Created by zihaoyang on 25/04/18.
- *
  * This class represents a Kalah game board
  */
 public class GameBoard {
@@ -81,11 +79,6 @@ public class GameBoard {
         return gameBoardRepresentation;
     }
 
-
-    protected int getNumHousesPerPlayer() {
-        return _housesPerPlayer;
-    }
-
     protected int[] getFinalScores() {
         int[] finalScores = new int[2];
 
@@ -99,14 +92,6 @@ public class GameBoard {
 
 
         return finalScores;
-    }
-
-    protected boolean isPlayerHouseEmpty(int houseNumber, int player) {
-        return _boardComponents.get(player).isHouseEmpty(houseNumber);
-    }
-
-    protected boolean isCurrentSideEmpty(int player) {
-        return _boardComponents.get(player).areHousesEmpty();
     }
 
     //Helper methods

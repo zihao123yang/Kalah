@@ -1,11 +1,8 @@
 package kalah.data;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 /**
- * Created by zihaoyang on 2/05/18.
- *
  * This is a data class that safely contains game board information
  */
 public class GameBoardRepresentation {
@@ -49,5 +46,41 @@ public class GameBoardRepresentation {
 
     public String getP2Name() {
         return _p2;
+    }
+
+    public boolean isSideEmpty(int playerNumber) {
+        boolean sideIsEmpty = true;
+        if (playerNumber == 1) {
+            for (int i = 0; i < _p1Houses.size(); i++) {
+                if (_p1Houses.get(i) != 0) {
+                    sideIsEmpty = false;
+                    break;
+                }
+            }
+        } else if (playerNumber == 2) {
+            for (int i = 0; i < _p2Houses.size(); i++) {
+                if (_p2Houses.get(i) != 0) {
+                    sideIsEmpty = false;
+                    break;
+                }
+            }
+        }
+
+        return sideIsEmpty;
+    }
+
+    public boolean ishouseEmpty(int houseIndex, int playerNumber) {
+        boolean houseIsEmpty = false;
+        if (playerNumber == 1) {
+            if (_p1Houses.get(houseIndex) == 0) {
+                houseIsEmpty = true;
+            }
+        } else if (playerNumber == 2) {
+            if (_p2Houses.get(houseIndex) == 0) {
+                houseIsEmpty = true;
+            }
+        }
+
+        return houseIsEmpty;
     }
 }

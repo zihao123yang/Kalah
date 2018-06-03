@@ -1,4 +1,4 @@
-package kalah.view;
+package kalah.io;
 
 import com.qualitascorpus.testsupport.IO;
 import kalah.data.GameBoardRepresentation;
